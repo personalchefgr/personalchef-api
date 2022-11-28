@@ -9,3 +9,7 @@ class DietaryPlanAdmin(admin.ModelAdmin):
 @admin.register(models.Meal)
 class MealAdmin(admin.ModelAdmin):
     pass
+
+@admin.register(models.MealNutrition)
+class MealNutritionAdmin(admin.ModelAdmin):
+    pass

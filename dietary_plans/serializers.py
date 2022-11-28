@@ -9,24 +9,28 @@ class DietaryPlanListSerializer(serializers.ModelSerializer):
 
 
 class DietaryPlanDetailsSerializer(serializers.ModelSerializer):
-    meals = serializers.SlugRelatedField(
-        many=True,
-        read_only=True,
-        slug_field='slug'
-    )
-
     class Meta:
         model = models.DietaryPlan
         fields = "__all__"
 
 
+class MealNutritionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.MealNutrition
+        fields = ['calories', 'protein', 'carbs', 'fat']
+
+
 class MealListSerializer(serializers.ModelSerializer):
+    plans = serializers.SlugRelatedField(many=True, read_only=True, slug_field='slug')
+    nutrition = MealNutritionSerializer(read_only=True)
+
     class Meta:
         model = models.Meal
-        fields = ['name', 'slug', 'calories', 'protein', 'carbs', 'fat']
+        fields = ['name', 'slug', 'img', 'plans', 'nutrition']
 
 
 class MealDetailsSerializer(serializers.ModelSerializer):
+    nutrition = MealNutritionSerializer(read_only=True)
     class Meta:
         model = models.Meal
         fields = "__all__"
