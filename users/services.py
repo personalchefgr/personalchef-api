@@ -1,6 +1,10 @@
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
+
 from . import models, serializers
 
 class UserService:
@@ -23,20 +27,24 @@ class UserService:
                 if user is not None:
                     login(request, user)
                     serializer = serializers.UserDetailsSerializer(user)
-                    return serializer.data
-
-            print(serializer.errors)
-        return None
+                    
+                    return Response(serializer.data, status=status.HTTP_200_OK)
+                    
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         
 
     @staticmethod
     def log_out_user(request):
-        if request.user.is_authenticated:
-            logout(request)
-            return True
+        submitted_refresh_token = request.data.get('refresh')
         
-        return False
+        try:
+            token = RefreshToken(submitted_refresh_token)
+            token.blacklist()
+            return Response(status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
     @staticmethod
     def delete_user():
@@ -50,13 +58,12 @@ class UserService:
         return serializer.data
 
     @staticmethod
-    def get_user_by_session(current_user=None):
-        if current_user.is_authenticated:
-            serializer = serializers.UserDetailsSerializer(current_user)
+    def get_user_by_session(request):
+        serializer = serializers.UserDetailsSerializer(requ)
             
-            return serializer.data
+        return Response(serializer.data, status=status.HTTP_200_OK)
         
-        return None
+        
 
     @staticmethod
     def get_user_by_id(id=None):

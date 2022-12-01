@@ -3,8 +3,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+
 urlpatterns = [
+    # Admin routes
     path('admin/', admin.site.urls),
+
+    # API routes
     path('v1/', include([
         path('dietary-plans/', include('dietary_plans.urls')),
         path('pricing-plans/', include('pricing_plans.urls')),
