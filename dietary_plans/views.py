@@ -1,6 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 from . import services
 
@@ -19,6 +21,8 @@ class DietaryPlanDetails(APIView):
 
 
 class MealList(APIView):
+    permission_classes = []
+    
     def get(self, request):
         dietary_plan_slug = request.query_params.get('dietary_plan_slug')
         
@@ -31,6 +35,8 @@ class MealList(APIView):
 
 
 class MealDetails(APIView):
+    permission_classes = []
+    
     def get(self, request, slug):
         meal = services.DietaryPlanService.get_meal_by_slug(slug)
         
