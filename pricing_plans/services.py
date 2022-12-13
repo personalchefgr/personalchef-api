@@ -7,13 +7,13 @@ class PricingPlanService:
     @staticmethod
     def get_all(dietary_plan=None):
         if dietary_plan is not None:
-            subscriptions = models.PricingPlan.objects.filter(
-                dietary_plan=dietary_plan)
+            pricing_plans = models.PricingPlan.objects.filter(
+                dietary_plan__slug=dietary_plan)
         else: 
-            subscriptions = models.PricingPlan.objects.all()
+            pricing_plans = models.PricingPlan.objects.all()
         
-        serializer = serializers.PricingPlanListSerializer(
-            subscriptions, many=True)
+        serializer = serializers.PricingPlanSerializer(
+            pricing_plans, many=True)
 
         return Response(serializer.data, 
                 status=status.HTTP_200_OK)

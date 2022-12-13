@@ -13,6 +13,7 @@ urlpatterns = [
         path('contact-form/', include('contact_form.urls')),
         path('dietary-plans/', include('dietary_plans.urls')),
         path('newsletter/', include('newsletter.urls')),
+        path('orders/', include('orders.urls')),
         path('payments/', include('payments.urls')),
         path('postcode-areas/', include('postcode_areas.urls')),
         path('pricing-plans/', include('pricing_plans.urls')),

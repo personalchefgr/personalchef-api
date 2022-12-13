@@ -7,7 +7,6 @@ class PricingPlanList(APIView):
 
     def get(self, request):
         dietary_plan = request.query_params.get('dietary_plan')
-        
-        response = PricingPlanService.get_all()
+        response = PricingPlanService.get_all(dietary_plan)
 
         return response

@@ -4,7 +4,7 @@ from . import models
 from dietary_plans.serializers import DietaryPlanListSerializer
 from subscriptions.serializers import SubscriptionSerializer
 
-class PricingPlanListSerializer(serializers.ModelSerializer):
+class PricingPlanSerializer(serializers.ModelSerializer):
     dietary_plan = DietaryPlanListSerializer(read_only=True)
     subscription = SubscriptionSerializer(read_only=True)
 
