@@ -5,7 +5,7 @@ from . import models
 class DietaryPlanListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.DietaryPlan
-        fields = ["name", "slug", "description"]
+        fields = ["name", "slug", "description", "img"]
 
 
 class DietaryPlanDetailsSerializer(serializers.ModelSerializer):
@@ -21,7 +21,11 @@ class MealNutritionSerializer(serializers.ModelSerializer):
 
 
 class MealListSerializer(serializers.ModelSerializer):
-    plans = serializers.SlugRelatedField(many=True, read_only=True, slug_field='slug')
+    plans = serializers.SlugRelatedField(
+        many=True, 
+        read_only=True, 
+        slug_field='slug')
+        
     nutrition = MealNutritionSerializer(read_only=True)
 
     class Meta:

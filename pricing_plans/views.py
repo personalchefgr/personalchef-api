@@ -1,11 +1,13 @@
 from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 
-from . import services
+from .services import PricingPlanService
 
 class PricingPlanList(APIView):
-    def get(self, request):
-        pricing_plans = services.PricingPlanService.get_all_pricing_plans()
+    permission_classes = []
 
-        return Response(pricing_plans, status=HTTP_200_OK)
+    def get(self, request):
+        dietary_plan = request.query_params.get('dietary_plan')
+        
+        response = PricingPlanService.get_all()
+
+        return response

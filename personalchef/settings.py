@@ -1,8 +1,5 @@
-import os
+import os, environ, datetime
 from pathlib import Path
-import datetime
-import environ
-from dotenv import load_dotenv
 
 env = environ.Env(
     DEBUG=(bool, False)
@@ -41,12 +38,14 @@ INSTALLED_APPS = [
     "phonenumber_field",
     
     # Custom apps
-    'dietary_plans.apps.DietaryPlansConfig',
     'contact_form.apps.ContactFormConfig',
-    'subscriptions.apps.SubscriptionsConfig',
-    'pricing_plans.apps.PricingPlansConfig',
+    'dietary_plans.apps.DietaryPlansConfig',
+    'newsletter.apps.NewsletterConfig',
     'orders.apps.OrdersConfig',
+    'payments.apps.PaymentsConfig',
     'postcode_areas.apps.PostcodeAreasConfig',
+    'pricing_plans.apps.PricingPlansConfig',
+    'subscriptions.apps.SubscriptionsConfig',
     'users.apps.UsersConfig',
 ]
 

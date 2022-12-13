@@ -32,6 +32,9 @@ class Subscription(models.Model):
     )
 
     meal_options = models.ManyToManyField(MealOption, blank=True)
+    meals_per_day = models.IntegerField()
+
+    number_of_weeks = models.IntegerField()
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

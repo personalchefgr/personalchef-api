@@ -78,4 +78,4 @@ class UserDetailsSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.UserProfile
-        exclude = ['user']
+        fields = '__all__'

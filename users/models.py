@@ -28,15 +28,20 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(CustomUser,
+            on_delete=models.CASCADE,
+            primary_key=True)
+
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
 
-    mobile_phone = PhoneNumberField(unique=True)
-    landline_phone = PhoneNumberField(null=True, blank=True)
+    mobile_phone = PhoneNumberField()
+    landline_phone = PhoneNumberField(blank=True)
 
     address1 = models.CharField(max_length=255)
-    address2 = models.CharField(max_length=255, blank=True, null=True)
+    address2 = models.CharField(
+                max_length=255, 
+                blank=True)
     address_number = models.PositiveIntegerField()
     town = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
@@ -44,7 +49,7 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.email
-
+    
     class Meta:
         db_table = "user_profiles"
         verbose_name = "User Profile"

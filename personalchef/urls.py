@@ -10,11 +10,13 @@ urlpatterns = [
 
     # API routes
     path('v1/', include([
+        path('contact-form/', include('contact_form.urls')),
         path('dietary-plans/', include('dietary_plans.urls')),
+        path('newsletter/', include('newsletter.urls')),
+        path('payments/', include('payments.urls')),
+        path('postcode-areas/', include('postcode_areas.urls')),
         path('pricing-plans/', include('pricing_plans.urls')),
         path('subscriptions/', include('subscriptions.urls')),
-        path('contact-form/', include('contact_form.urls')),
-        path('postcode-areas/', include('postcode_areas.urls')),
         path('users/', include('users.urls')),
     ]))
 ]

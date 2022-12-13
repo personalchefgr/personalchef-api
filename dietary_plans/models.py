@@ -43,8 +43,14 @@ class DietaryPlan(models.Model):
     name = models.CharField(max_length=25)
     slug = models.SlugField(max_length=25)
     description = models.TextField(blank=True)
+    img = models.ImageField(
+            upload_to='dietary_plans', 
+            blank=True, 
+            null=True)
 
-    meals = models.ManyToManyField(Meal, related_name='plans', blank=True)
+    meals = models.ManyToManyField(Meal, 
+            related_name='plans', 
+            blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

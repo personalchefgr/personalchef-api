@@ -15,10 +15,6 @@ urlpatterns = [
     path('meals', 
         views.MealList.as_view(), 
         name="meal-list"),
-
-    path('meals/dietary-plan/<slug:slug>', 
-        views.MealList.as_view(), 
-        name="meal-list"),
         
     path('meals/meal/<slug:slug>', 
         views.MealDetails.as_view(), 
