@@ -39,9 +39,7 @@ class PaymentService:
         return None
 
     @staticmethod
-    def create_payment_order(request):
-        _access_token = PaymentService.viva_wallet_OAuth2_access_token()
-
+    def create_payment_order(request, _access_token=None):
         if _access_token is not None:
             base_url = env('VIVA_WALLET_API_URL')
             url = base_url + 'checkout/v2/orders'
@@ -52,10 +50,8 @@ class PaymentService:
             }
 
             payload = {
-                "amount": 30,
-                "customerTrns": "Testing the smartcheckout thingy",
-                "disableCash": "true",
-                "sourceCode": env('VIVA_WALLET_PAYMENT_SOURCE_CODE')
+                "amount": int(3000),
+                "sourceCode": str(6530) #env('VIVA_WALLET_PAYMENT_SOURCE_CODE')
             }
             
             response = requests.post(url,

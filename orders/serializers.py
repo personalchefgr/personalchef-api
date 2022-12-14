@@ -1,3 +1,5 @@
+import random
+
 from rest_framework import serializers
 
 from . import models
@@ -6,7 +8,7 @@ from users.models import CustomUser
 from dietary_plans.models import DietaryPlan
 from subscriptions.models import Subscription
 
-class NewOrderSerializer(serializers.ModelSerializer):
+class OrderSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(
         queryset=CustomUser.objects.all(), 
         slug_field='email')

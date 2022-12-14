@@ -26,7 +26,7 @@ class Order(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return ('Order %s - %s - %s' % (self.id, self.user, self.created_at))
+        return ('Order #%s - %s - %s' % (self.id, self.user, self.created_at.strftime("%d/%m/%Y - %H:%M:%S")))
 
     class Meta:
         db_table = 'orders'
