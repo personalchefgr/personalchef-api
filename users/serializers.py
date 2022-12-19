@@ -53,8 +53,9 @@ class UserLoginSerializer(serializers.Serializer):
 class UserSessionSerializer(serializers.Serializer):
     id = serializers.CharField(max_length=120)
     email = serializers.EmailField()
-    access_token = serializers.CharField(max_length=250)
-    refresh_token = serializers.CharField(max_length=250)
+    accessToken = serializers.CharField(max_length=250)
+    refreshToken = serializers.CharField(max_length=250)
+    accessTokenExpires = serializers.CharField(max_length=250)
 
 
 class UserListSerializer(serializers.ModelSerializer):

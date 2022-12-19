@@ -48,10 +48,13 @@ class AuthService:
                         {
                             'id': user.id,
                             'email': user.email,
-                            'access_token': str(refresh.access_token),
-                            'refresh_token': str(refresh),
+                            'accessToken': str(refresh.access_token),
+                            'refreshToken': str(refresh),
+                            'accessTokenExpires': "",
                         }
                     )
+
+                    print(serializer.data)
                     
                     return Response(
                         serializer.data, 
