@@ -35,8 +35,8 @@ class UserProfile(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
 
-    mobile_phone = PhoneNumberField()
-    landline_phone = PhoneNumberField(blank=True)
+    mobile_phone = models.CharField(max_length=15)
+    landline_phone = models.CharField(max_length=15, blank=True)
 
     address1 = models.CharField(max_length=255)
     address2 = models.CharField(

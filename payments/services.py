@@ -57,9 +57,8 @@ class PaymentService:
             
             response = requests.post(url,
                 headers=headers,
-                data=payload,
+                json=payload,
             )
-            print(response.json())
 
             if(response.status_code==200):
                 print(response.json())
