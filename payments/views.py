@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from .services import PaymentService
 
 class PaymentOrderView(APIView):
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, order_id):
         _access_token = \
@@ -17,7 +17,7 @@ class PaymentOrderView(APIView):
 
 
 class VerifyTransactionVIew(APIView):
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         _access_token = PaymentService.viva_wallet_OAuth2_access_token()
@@ -27,7 +27,7 @@ class VerifyTransactionVIew(APIView):
 
 
 class ConfirmPaymentView(APIView):
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         response = PaymentService.confirm_payment(request)
