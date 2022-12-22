@@ -24,6 +24,7 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Order
         fields = [
+            'id',
             'user', 
             'dietary_plan', 
             'subscription',

@@ -1,7 +1,13 @@
 import environ, requests, base64
 
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
+
+from orders.models import Order
+from users.models import CustomUser
+from dietary_plans.models import DietaryPlan
+from subscriptions.models import Subscription
 
 env = environ.Env()
 
@@ -39,7 +45,22 @@ class PaymentService:
         return None
 
     @staticmethod
-    def create_payment_order(request, _access_token=None):
+    def get_order_code(
+        request, 
+        order_id=None, 
+        _access_token=None
+    ):
+        order = get_object_or_404(Order, id=order_id)
+
+        user = CustomUser.objects \
+                .select_related('profile') \
+                .get(id=order.user.id)
+        dietary_plan = get_object_or_404(DietaryPlan, 
+                    id=order.dietary_plan.id)
+        subscription = get_object_or_404(Subscription, 
+                    id=order.subscription.id)
+
+
         if _access_token is not None:
             base_url = env('VIVA_WALLET_API_URL')
             url = base_url + 'checkout/v2/orders'
@@ -51,8 +72,30 @@ class PaymentService:
             }
 
             payload = {
-                "amount": int(3000),
-                "sourceCode": env('VIVA_WALLET_PAYMENT_SOURCE_CODE')
+                "customerTrns": "%s - %s" % (
+                                dietary_plan, 
+                                subscription
+                            ),
+                "customer": {
+                    "email": user.email,
+                    "fullName": "%s %s" % (
+                        user.profile.first_name, 
+                        user.profile.last_name
+                    ),
+                    "phone": user.profile.mobile_phone,
+                    "countryCode": "GR",
+                    "requestLang": "el-GR"
+                },
+                "amount": int(order.total_amount*100),
+                "disableCash": "true",
+                "disableWallet": "true",
+                "merchantTrns": "%s - %s" % (
+                                str(order.id), 
+                                user.email
+                            ),
+                "sourceCode": \
+                    env('VIVA_WALLET_PAYMENT_SOURCE_CODE'),
+                
             }
             
             response = requests.post(url,
@@ -61,7 +104,6 @@ class PaymentService:
             )
 
             if(response.status_code==200):
-                print(response.json())
                 return Response(response.json(), status=status.HTTP_200_OK)
             
             return Response(response.json(), status=status.HTTP_400_BAD_REQUEST)

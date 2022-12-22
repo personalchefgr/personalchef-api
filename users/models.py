@@ -29,6 +29,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(CustomUser,
+            related_name='profile',
             on_delete=models.CASCADE,
             primary_key=True)
 

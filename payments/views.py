@@ -4,11 +4,14 @@ from rest_framework.permissions import IsAuthenticated
 from .services import PaymentService
 
 class PaymentOrderView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
 
-    def post(self, request):
-        _access_token = PaymentService.viva_wallet_OAuth2_access_token()
-        response = PaymentService.create_payment_order(request, _access_token)
+    def get(self, request, order_id):
+        _access_token = \
+                PaymentService.viva_wallet_OAuth2_access_token()
+
+        response = PaymentService.get_order_code(
+                        request, order_id, _access_token)
 
         return response
 
