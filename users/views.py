@@ -32,7 +32,7 @@ class UserDetails(APIView):
 
 
 class UserProfile(APIView):
-    permission_classes = (IsAuthenticated, )
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         response = UserService.get_logged_in_user_profile(request)

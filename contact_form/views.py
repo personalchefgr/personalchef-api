@@ -5,6 +5,8 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from .services import ContactFormService
 
 class MessageDetails(APIView):
+    permission_classes = []
+    
     def post(self, request):
         success, response = ContactFormService.create_new_message(request)
 
