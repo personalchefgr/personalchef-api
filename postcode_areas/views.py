@@ -2,15 +2,23 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 
-from . import services
+from .services import PostcodeAreaService
+
+
+class PostcodeAreaList(APIView):
+    permission_classes = []
+
+    def get(self, request):
+        response = PostcodeAreaService.get_postcode_area_by_postcode(request)
+
+        return response
+
 
 class PostcodeAreaDetails(APIView):
-    persmission_classes = []
-    
+    permission_classes = []
+
     def get(self, request, postcode):
-        if postcode:
-            postcode_area = services.PostcodeAreaService.get_postcode_area_by_postcode(postcode)
+        response = PostcodeAreaService.get_postcode_area_by_postcode(postcode)
 
-            return Response(postcode_area, status=HTTP_200_OK)
+        return response
 
-        return Response(status=HTTP_400_BAD_REQUEST)
