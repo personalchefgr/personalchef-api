@@ -61,10 +61,20 @@ class UserLogIn(APIView):
         
         return response
 
+
 class UserLogOut(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
         response = AuthService.log_out_user(request)
         
+        return response
+
+
+class UserForgotPassword(APIView):
+    permission_classes = []
+
+    def post(self, request):
+        response = AuthService.send_password_reset_link(request)
+
         return response

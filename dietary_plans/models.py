@@ -3,8 +3,12 @@ from django.db import models
 class Meal(models.Model):
     name = models.CharField(max_length=55)
     slug = models.SlugField(max_length=25)
+
+    snippet = models.TextField(blank=True)
     description = models.TextField(blank=True)
     img = models.ImageField(upload_to='meals', blank=True, null=True)
+
+    sort_order = models.IntegerField()
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -14,6 +18,7 @@ class Meal(models.Model):
 
     class Meta:
         db_table = "meals"
+        ordering = ['sort_order']
         verbose_name = "Meal"
         verbose_name_plural = "Meals"
 
@@ -42,6 +47,8 @@ class MealNutrition(models.Model):
 class DietaryPlan(models.Model):
     name = models.CharField(max_length=25)
     slug = models.SlugField(max_length=25)
+
+    snippet = models.TextField(blank=True)
     description = models.TextField(blank=True)
     img = models.ImageField(
             upload_to='dietary_plans', 
@@ -52,6 +59,8 @@ class DietaryPlan(models.Model):
             related_name='plans', 
             blank=True)
 
+    sort_order = models.IntegerField()
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -60,5 +69,6 @@ class DietaryPlan(models.Model):
 
     class Meta:
         db_table = "dietary_plans"
+        ordering = ['sort_order']
         verbose_name = "Dietary Plan"
         verbose_name_plural = "Dietary Plans"

@@ -9,7 +9,8 @@ class UserRegisterSerializer(serializers.Serializer):
     email = serializers.EmailField(
         validators=[
             UniqueValidator(
-                queryset=models.CustomUser.objects.all()
+                queryset=models.CustomUser.objects.all(),
+                message="User exists"
             )
         ]
     )
@@ -48,7 +49,7 @@ class UserRegisterSerializer(serializers.Serializer):
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(max_length=200)
-
+    
 
 class UserSessionSerializer(serializers.Serializer):
     id = serializers.CharField(max_length=120)

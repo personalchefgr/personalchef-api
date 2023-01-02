@@ -5,7 +5,7 @@ from . import models
 class DietaryPlanListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.DietaryPlan
-        fields = ["name", "slug", "description", "img"]
+        fields = ["name", "slug", "snippet", "img"]
 
 
 class DietaryPlanDetailsSerializer(serializers.ModelSerializer):

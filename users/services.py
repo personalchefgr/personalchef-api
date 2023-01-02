@@ -1,11 +1,12 @@
-from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, login, logout
+from django.db import IntegrityError
+from django.shortcuts import get_object_or_404
 
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from . import models, serializers
+from . import models, serializers, utils
 
 from time import sleep
 
@@ -16,15 +17,14 @@ class AuthService:
             serializer = serializers.UserRegisterSerializer(
                             data=request.data)
             
-            if serializer.is_valid():
-                user = serializer.create(serializer.data)
-
-                return Response(status=status.HTTP_201_CREATED)
+            if serializer.is_valid(raise_exception=False):
+                serializer.create(serializer.data)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
             
-            return Response(serializer.errors,
+            return Response({"errors": serializer.errors},
                 status=status.HTTP_400_BAD_REQUEST)
 
-        return Response({"error": "Missing credentials."}, 
+        return Response({"errors": ["Missing credentials"]}, 
             status=status.HTTP_400_BAD_REQUEST)
                 
     @staticmethod
@@ -85,8 +85,16 @@ class AuthService:
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        return Response({"message": "Logged out successfully"},
-            status=status.HTTP_200_OK)
+    @staticmethod
+    def send_password_reset_link(request):
+        email = request.data.get('email')
+
+        try:
+            user = models.CustomUser.objects.get(email=email)
+        except:
+            user = None
+
+        return Response(status=status.HTTP_200_OK)
 
     @staticmethod
     def delete_user():
