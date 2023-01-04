@@ -41,7 +41,7 @@ class AuthService:
 
                 admin_subject = "Νέος χρήστης - %s" % user.email
                 UserEmailNotificationService.send_admin_email_template(
-                    template_name="user_new_user_created",
+                    template_name="admin_new_user_created",
                     subject=admin_subject,
                 )
 
