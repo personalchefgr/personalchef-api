@@ -104,8 +104,9 @@ class PaymentService:
                 data = response.json()
                 order_code = data['orderCode']
 
-                order.order_code = order_code
-                order.save()
+                if order_code is not None:
+                    order.order_code = order_code
+                    order.save()
 
                 return Response({"orderCode": order_code}, status=status.HTTP_200_OK)
             
@@ -123,7 +124,6 @@ class PaymentService:
     def confirm_payment(request):
         event_data = request.data.get('EventData')
         order_code = event_data['OrderCode']
-        print(order_code)
  
         if order_code is not None:
             try:
@@ -141,7 +141,7 @@ class PaymentService:
             )
 
             admin_subject = "Παραγγελία %s - %s - Ολοκληρώθηκε" % (order.id, order.user.email)
-            UserEmailNotificationService.send_user_email_template(
+            UserEmailNotificationService.send_admin_email_template(
                 template_name="admin_new_order_completed",
                 subject=admin_subject,
             )
