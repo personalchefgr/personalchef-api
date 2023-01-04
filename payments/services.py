@@ -107,12 +107,6 @@ class PaymentService:
                 if order.order_code is None:
                     order.order_code = order_code
                     order.save()
-                
-                UserEmailNotificationService.send_user_email_template(
-                    template_name="New user welcome",
-                    subject="Η παραγγελία σου ολοκληρώθηκε επιτυχώς!",
-                    receiving_address=[{"email": order.user.email}]
-                )
 
                 return Response({"orderCode": order_code}, status=status.HTTP_200_OK)
             
@@ -128,26 +122,31 @@ class PaymentService:
 
     @staticmethod
     def confirm_payment(request):
-        print('entered on confirm payment')
-        event_data = request.data.get('eventData')
-        order_code = event_data['order_code']
-
+        event_data = request.data.get('EventData')
+        order_code = event_data['OrderCode']
+        print(order_code)
+ 
         if order_code is not None:
             try:
                 order = Order.objects.get(order_code=order_code)
                 order.payment_status = 'completed'
                 order.save()
-                print(order)
             except:
-                print('update failed')
                 return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)
 
+            user_subject = "Η παραγγελία σου ολοκληρώθηκε επιτυχώς!"
             UserEmailNotificationService.send_user_email_template(
-                template_name="New user welcome",
-                subject="Η παραγγελία σου ολοκληρώθηκε επιτυχώς!",
+                template_name="user_new_order_completed",
+                subject=user_subject,
                 receiving_address=[{"email": order.user.email}]
             )
 
+            admin_subject = "Παραγγελία %s - %s - Ολοκληρώθηκε" % (order.id, order.user.email)
+            UserEmailNotificationService.send_user_email_template(
+                template_name="admin_new_order_completed",
+                subject=admin_subject,
+            )
+
             return Response({"message": "Order completed"}, status=status.HTTP_200_OK)
-        print('order code not found')
+            
         return Response({"error": "Order code missing"}, status=status.HTTP_400_BAD_REQUEST)

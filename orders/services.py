@@ -14,7 +14,20 @@ class OrderService:
         serializer = serializers.OrderSerializer(data=request.data)
 
         if serializer.is_valid():
-            serializer.save()
+            order = serializer.save()
+            
+            user_subject = "Λάβαμε την παραγγελία σου!"
+            UserEmailNotificationService.send_user_email_template(
+                template_name="user_new_order_created",
+                subject=user_subject,
+                receiving_address=[{"email": order.user.email}]
+            )
+
+            admin_subject = "Παραγγελία %s - %s - Εκκρεμεί" % (order.id, order.user.email)
+            UserEmailNotificationService.send_admin_email_template(
+                template_name="admin_new_order_created",
+                subject=admin_subject,
+            )
 
             return Response(serializer.data, status=status.HTTP_200_OK)
         

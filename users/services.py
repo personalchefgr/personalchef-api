@@ -30,12 +30,19 @@ class AuthService:
             if serializer.is_valid(raise_exception=False):
                 user = serializer.create(serializer.data)
 
+                user_subject="Καλώς ήρθες στο Personal Chef!"
                 UserEmailNotificationService.send_user_email_template(
-                    template_name="New user welcome",
-                    subject="Καλώς ήρθες στο Personal Chef!",
+                    template_name="user_new_user_created",
+                    subject=user_subject,
                     receiving_address=[{
                         "email": user.email
                     }]
+                )
+
+                admin_subject = "Νέος χρήστης - %s" % user.email
+                UserEmailNotificationService.send_admin_email_template(
+                    template_name="user_new_user_created",
+                    subject=admin_subject,
                 )
 
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -173,6 +180,37 @@ class UserEmailNotificationService:
             "from_name": "Personal Chef",
             "subject": subject,
             "to": receiving_address
+        }
+
+        try:
+            response = mailchimp.messages.send_template(
+                {
+                    "template_name": template_name, 
+                    "template_content": template_content, 
+                    "message": message
+                }
+            )
+        except ApiClientError as error:
+            print("An exception occurred: {}".format(error.text))
+    
+    @staticmethod
+    def send_admin_email_template(
+        template_name, 
+        template_content=[{}],
+        subject="",
+    ):
+        message = {
+            "from_email": env('EMAIL_SENDING_ADDRESS'),
+            "from_name": "Personal Chef",
+            "subject": subject,
+            "to": [
+                {
+                    "email": "info@personal-chef.gr"
+                },
+                {
+                    "email": "a.kotsampaseris@gmail.com"
+                },
+            ]
         }
 
         try:
