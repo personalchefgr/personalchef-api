@@ -12,7 +12,7 @@ PAYMENT_STATUS_CHOICES = [
 
 class Order(models.Model):
     user = models.ForeignKey(CustomUser, related_name='user', on_delete=models.CASCADE)
-    order_code = models.CharField(max_length=250, blank=True, null=True)
+    order_code = models.CharField(max_length=250, blank=True, default='')
 
     dietary_plan = models.ForeignKey(DietaryPlan, related_name='dietary_plan', on_delete=models.CASCADE)
     subscription = models.ForeignKey(Subscription, related_name='subscription', on_delete=models.CASCADE)
