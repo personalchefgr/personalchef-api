@@ -104,9 +104,8 @@ class PaymentService:
                 data = response.json()
                 order_code = data['orderCode']
 
-                if order.order_code is None:
-                    order.order_code = order_code
-                    order.save()
+                order.order_code = order_code
+                order.save()
 
                 return Response({"orderCode": order_code}, status=status.HTTP_200_OK)
             
