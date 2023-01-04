@@ -136,7 +136,9 @@ class PaymentService:
                 order = Order.objects.get(order_code=order_code)
                 order.payment_status = 'completed'
                 order.save()
+                print(order)
             except:
+                print('update failed')
                 return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)
 
             UserEmailNotificationService.send_user_email_template(
@@ -146,5 +148,5 @@ class PaymentService:
             )
 
             return Response({"message": "Order completed"}, status=status.HTTP_200_OK)
-
+        print('order code not found')
         return Response({"error": "Order code missing"}, status=status.HTTP_400_BAD_REQUEST)
