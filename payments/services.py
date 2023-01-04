@@ -144,6 +144,12 @@ class PaymentService:
         return Response({"Key": webhook_key}, status=status.HTTP_200_OK)
     
     @staticmethod
+    def print_webhook(request):
+        print(request.data)
+
+        return Response({}, status=status.HTTP_200_OK)
+
+    @staticmethod
     def confirm_payment(request):
         url = "https://demo.vivapayments.com/api/messages/config/token"
 

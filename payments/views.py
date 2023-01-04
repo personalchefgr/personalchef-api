@@ -33,3 +33,8 @@ class ConfirmPaymentView(APIView):
         response = PaymentService.verify_webhook_url()
 
         return response
+
+    def post(self, request):
+        response = PaymentService.print_webhook(request)
+
+        return response
