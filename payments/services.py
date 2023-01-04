@@ -14,11 +14,6 @@ env = environ.Env()
 
 class PaymentService:
     @staticmethod
-    def print_request(request):
-        print(request.user)
-        print(request.data)
-
-    @staticmethod
     def viva_wallet_OAuth2_access_token():
         base_url = env('VIVA_WALLET_ACCOUNTS_URL')
         url = base_url + 'connect/token'
@@ -106,11 +101,18 @@ class PaymentService:
             )
 
             if(response.status_code==200):
-                order_code = response.json()
+                data = response.json()
+                order_code = data['orderCode']
 
                 if order.order_code is None:
                     order.order_code = order_code
                     order.save()
+                
+                UserEmailNotificationService.send_user_email_template(
+                    template_name="New user welcome",
+                    subject="Η παραγγελία σου ολοκληρώθηκε επιτυχώς!",
+                    receiving_address=[{"email": order.user.email}]
+                )
 
                 return Response({"orderCode": order_code}, status=status.HTTP_200_OK)
             
