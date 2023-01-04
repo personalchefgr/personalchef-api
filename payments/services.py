@@ -128,6 +128,7 @@ class PaymentService:
 
     @staticmethod
     def confirm_payment(request):
+        print('entered on confirm payment')
         event_data = request.data.get('eventData')
         order_code = event_data['order_code']
 
