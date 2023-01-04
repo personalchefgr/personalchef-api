@@ -1,3 +1,6 @@
+import environ
+from time import sleep
+
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
@@ -6,9 +9,16 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
+import mailchimp_transactional as MailchimpTransactional
+from mailchimp_transactional.api_client import ApiClientError
+
 from . import models, serializers, utils
 
-from time import sleep
+env = environ.Env()
+
+mailchimp = MailchimpTransactional.Client(
+    api_key=env('MAILCHIMP_TRANSACTIONAL_API_KEY')
+)
 
 class AuthService:
     @staticmethod
@@ -18,7 +28,16 @@ class AuthService:
                             data=request.data)
             
             if serializer.is_valid(raise_exception=False):
-                serializer.create(serializer.data)
+                user = serializer.create(serializer.data)
+
+                UserEmailNotificationService.send_user_email_template(
+                    template_name="New user welcome",
+                    subject="Καλώς ήρθες στο Personal Chef!",
+                    receiving_address=[{
+                        "email": user.email
+                    }]
+                )
+
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             
             return Response({"errors": serializer.errors},
@@ -53,8 +72,6 @@ class AuthService:
                             'accessTokenExpires': "",
                         }
                     )
-
-                    print(serializer.data)
                     
                     return Response(
                         serializer.data, 
@@ -141,3 +158,30 @@ class UserService:
         return Response(
             serializer.errors, 
             status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserEmailNotificationService:
+    @staticmethod
+    def send_user_email_template(
+        template_name, 
+        template_content=[{}],
+        subject="",
+        receiving_address=[{}],
+    ):
+        message = {
+            "from_email": env('EMAIL_SENDING_ADDRESS'),
+            "from_name": "Personal Chef",
+            "subject": subject,
+            "to": receiving_address
+        }
+
+        try:
+            response = mailchimp.messages.send_template(
+                {
+                    "template_name": template_name, 
+                    "template_content": template_content, 
+                    "message": message
+                }
+            )
+        except ApiClientError as error:
+            print("An exception occurred: {}".format(error.text))

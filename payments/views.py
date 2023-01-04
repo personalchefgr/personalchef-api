@@ -27,9 +27,9 @@ class VerifyTransactionVIew(APIView):
 
 
 class ConfirmPaymentView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
 
     def get(self, request):
-        response = PaymentService.confirm_payment(request)
+        response = PaymentService.verify_webhook_url()
 
         return response

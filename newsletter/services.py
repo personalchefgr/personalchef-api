@@ -11,8 +11,8 @@ env = environ.Env()
 
 mailchimp = MailchimpMarketing.Client()
 mailchimp.set_config({
-'api_key': env('MAILCHIMP_API_KEY'),
-'server': env('MAILCHIMP_REGION'),
+    'api_key': env('MAILCHIMP_MARKETING_API_KEY'),
+    'server': env('MAILCHIMP_REGION'),
 })
 
 class NewsletterService:

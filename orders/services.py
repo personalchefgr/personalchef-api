@@ -3,6 +3,7 @@ import environ, requests, base64
 from rest_framework import status
 from rest_framework.response import Response
 
+from users.services import UserEmailNotificationService
 from . import models, serializers
 
 env = environ.Env()

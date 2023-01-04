@@ -137,6 +137,11 @@ class PaymentService:
 
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+    @staticmethod
+    def verify_webhook_url():
+        webhook_key = env('VIVA_WALLET_WEBHOOK_KEY')
+        
+        return Response({"Key": webhook_key}, status=status.HTTP_200_OK)
     
     @staticmethod
     def confirm_payment(request):
