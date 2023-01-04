@@ -26,6 +26,7 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'user', 
+            'order_code',
             'dietary_plan', 
             'subscription',
             'days',

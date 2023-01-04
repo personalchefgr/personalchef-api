@@ -16,16 +16,6 @@ class PaymentOrderView(APIView):
         return response
 
 
-class VerifyTransactionVIew(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        _access_token = PaymentService.viva_wallet_OAuth2_access_token()
-        response = PaymentService.verify_transaction(request, _access_token)
-
-        return response
-
-
 class ConfirmPaymentView(APIView):
     permission_classes = []
 
@@ -35,6 +25,6 @@ class ConfirmPaymentView(APIView):
         return response
 
     def post(self, request):
-        response = PaymentService.print_webhook(request)
+        response = PaymentService.confirm_payment(request)
 
         return response
