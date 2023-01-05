@@ -9,6 +9,7 @@ class PaymentOrderView(APIView):
     def get(self, request, order_id):
         _access_token = \
                 PaymentService.viva_wallet_OAuth2_access_token()
+        print(_access_token)
         response = PaymentService.get_order_code(
                         request, order_id, _access_token)
 

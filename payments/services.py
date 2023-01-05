@@ -96,18 +96,19 @@ class PaymentService:
                 json=payload,
             )
 
-            if(response.status_code==200):
+            try:
                 data = response.json()
                 order_code = data['orderCode']
-
+                print(order_code)
+                
                 if order_code is not None:
                     order.order_code = order_code
                     order.save()
 
                 return Response({"orderCode": order_code}, status=status.HTTP_200_OK)
-            
-            return Response(response.json(), status=status.HTTP_400_BAD_REQUEST)
-        
+            except:
+                return Response(response.json(), status=status.HTTP_400_BAD_REQUEST)
+
         return Response({"error": 'Authentication failed.'}, status=status.HTTP_401_UNAUTHORIZED)
 
     @staticmethod
