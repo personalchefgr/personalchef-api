@@ -34,18 +34,14 @@ class PaymentService:
             data={'grant_type': 'client_credentials'}
         )
 
-        if(response.status_code==200):
+        try:
             data = response.json()
             return data['access_token']
-        
-        return None
+        except:
+            return None
 
     @staticmethod
-    def get_order_code(
-        request, 
-        order_id=None, 
-        _access_token=None
-    ):
+    def get_order_code(request, order_id=None, _access_token=None):
         order = get_object_or_404(Order, id=order_id)
 
         user = CustomUser.objects \
@@ -112,7 +108,7 @@ class PaymentService:
             
             return Response(response.json(), status=status.HTTP_400_BAD_REQUEST)
         
-        return Response({'Authentication failed.'}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({"error": 'Authentication failed.'}, status=status.HTTP_401_UNAUTHORIZED)
 
     @staticmethod
     def verify_webhook_url():
