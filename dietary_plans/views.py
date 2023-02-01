@@ -25,8 +25,7 @@ class MealList(APIView):
     permission_classes = []
     
     def get(self, request):
-        dietary_plan = request.query_params.get('dietary_plan')
-        response = MealService.get_all(dietary_plan)
+        response = MealService.get_all(request)
 
         return response
 

@@ -129,8 +129,6 @@ class UserService:
     @staticmethod
     def get_logged_in_user_profile(request):
         user = request.user
-        print(user)
-        sleep(2)
 
         try:
             user_profile = models.UserProfile.objects.get(user=user)

@@ -35,6 +35,7 @@ class MealListSerializer(serializers.ModelSerializer):
 
 class MealDetailsSerializer(serializers.ModelSerializer):
     nutrition = MealNutritionSerializer(read_only=True)
+    
     class Meta:
         model = models.Meal
         fields = "__all__"

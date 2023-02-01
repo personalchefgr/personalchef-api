@@ -11,6 +11,7 @@ urlpatterns = [
     # API routes
     path('v1/', include([
         path('contact-form/', include('contact_form.urls')),
+        path('coupons/', include('coupons.urls')),
         path('dietary-plans/', include('dietary_plans.urls')),
         path('newsletter/', include('newsletter.urls')),
         path('orders/', include('orders.urls')),

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     
     # Custom apps
     'contact_form.apps.ContactFormConfig',
+    'coupons.apps.CouponsConfig',
     'dietary_plans.apps.DietaryPlansConfig',
     'newsletter.apps.NewsletterConfig',
     'orders.apps.OrdersConfig',

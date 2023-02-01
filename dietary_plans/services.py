@@ -24,7 +24,9 @@ class DietaryPlanService:
 
 class MealService:
     @staticmethod
-    def get_all(dietary_plan=None):
+    def get_all(request):
+        dietary_plan = request.query_params.get('dietary_plan')
+        
         if dietary_plan is not None:
             meals = models.Meal.objects.filter(
                     dietary_plan=dietary_plan)
