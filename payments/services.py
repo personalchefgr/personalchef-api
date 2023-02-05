@@ -79,7 +79,7 @@ class PaymentService:
                     "countryCode": "GR",
                     "requestLang": "el-GR"
                 },
-                "amount": int(order.total_amount*100),
+                "amount": int(order.final_amount*100),
                 "disableCash": "true",
                 "disableWallet": "true",
                 "merchantTrns": "%s - %s" % (
