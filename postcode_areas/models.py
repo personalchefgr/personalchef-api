@@ -16,3 +16,16 @@ class PostcodeArea(models.Model):
         db_table = "postcode_areas"
         verbose_name = "Postcode Area"
         verbose_name_plural = "Postcode Areas"
+
+
+class PostcodeQuery(models.Model):
+    postcode = models.IntegerField()
+    queried_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.postcode)
+
+    class Meta:
+        db_table = "postcode_queries"
+        verbose_name = "Postcode Query"
+        verbose_name_plural = "Postcode Queries"

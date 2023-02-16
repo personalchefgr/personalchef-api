@@ -18,6 +18,7 @@ class PostcodeAreaDetails(APIView):
     permission_classes = []
 
     def get(self, request, postcode):
+        PostcodeAreaService.save_postcode_query(postcode)
         response = PostcodeAreaService.get_postcode_area_by_postcode(postcode)
 
         return response

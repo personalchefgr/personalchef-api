@@ -25,3 +25,12 @@ class PostcodeAreaService:
                 return Response({"error": "No area found"}, status=status.HTTP_404_NOT_FOUND)
         
         return Response({"error": "No postcode submitted"}, status=status.HTTP_400_BAD_REQUEST)
+    
+
+    @staticmethod
+    def save_postcode_query(postcode=None):
+        try:
+            postcode_query = models.PostcodeQuery(postcode=postcode)
+            postcode_query.save()
+        except:
+            pass
